@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOVA VAULT - Intelligent Multi-Modal Storage System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- TensorFlow.js + MobileNet -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0"></script>
+
+    <!-- SUPABASE via CLOUDFLARE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.2/dist/umd/supabase.js"></script>
+
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <div class="loader-circle"></div>
+            <div class="loader-circle"></div>
+        </div>
+        <h3>NOVA VAULT</h3>
+    </div>
+
+    <header id="header">
+        <div class="logo">NOVA VAULT</div>
+        <nav>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#demo">Storage</a></li>
+                <li><a href="#ai-integration">AI Engine</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="hero">
+        <div id="particles"></div>
+        <h1>NOVA VAULT</h1>
+        <p>Real AI-Powered Storage: Media + JSON + SQL/NoSQL<br>One Interface, Zero Servers</p>
+        <a href="#demo" class="cta-btn">Start Storing</a>
+    </section>
+
+    <!--ABOUT SECTION -->
+    <section id="about">
+        <h2>About NOVA VAULT</h2>
+        <div class="about-grid">
+            <div class="about-card">
+                <h3>Privacy-First AI</h3>
+                <p>All processing runs on your device, no data ever leaves your browser. Your photos, documents,
+                    and JSON stay 100% private.</p>
+            </div>
+            <div class="about-card">
+                <h3>Universal Compatibility</h3>
+                <p>Works with JPG, PNG, HEIC, HEIF, video, audio, even 10 MB+ files. Auto-converts HEIC to JPEG for
+                    AI analysis.</p>
+            </div>
+            <div class="about-card">
+                <h3>Enterprise Ready</h3>
+                <p>Export full backups in one click. Import across devices. Built with IndexedDB for persistent,
+                    scalable storage.</p>
+            </div>
+            <div class="about-card">
+                <h3>Future-Proof</h3>
+                <p>AI embeddings enable semantic search (“show me sunsets”). Voice commands. JSON → SQL/NoSQL
+                    auto-schema.</p>
+            </div>
+        </div>
+        <p class="about-tagline">
+            <strong>NOVA VAULT</strong> isn't just storage — it's an intelligent vault that <em>understands</em>
+            your data.
+        </p>
+    </section>
+    <!-- Features-->
+
+    <section id="features">
+        <h2>Real Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-images"></i>
+                <h3>AI Media Folders</h3>
+                <p>TensorFlow.js classifies images → dynamic directories.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-code"></i>
+                <h3>Auto Schema</h3>
+                <p>JSON → SQL or NoSQL with relationships & indexes.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-search"></i>
+                <h3>Semantic Search</h3>
+                <p>Natural language across media & databases.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-database"></i>
+                <h3>IndexedDB</h3>
+                <p>Persistent, real storage in your browser.</p>
+            </div>
+        </div>
+    </section>
+    <!-- Storage -->
+
+    <section id="demo">
+        <h2>Real Storage & Search</h2>
+        <div class="demo-container">
+            <div class="demo-tabs">
+                <button class="tab-btn active" data-tab="media">Media</button>
+                <button class="tab-btn" data-tab="json">JSON</button>
+                <button class="tab-btn" data-tab="search">Search</button>
+            </div>
+
+            <!-- Media Tab -->
+            <div id="media" class="tab-content active">
+                <div class="input-group">
+                    <div class="input-row">
+                        <input type="file" id="media-file"
+                            accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.json,.zip,.rar"
+                            multiple>
+                        <input type="text" id="media-comment" placeholder="Optional hint (e.g., 'sunset beach')">
+                        <button id="upload-media-btn">Store</button>
+                    </div>
+                    <small style="color:#aaa; margin-top:5px; display:block; text-align:center;">
+                        HEIC files auto-converted to JPEG for AI
+                    </small>
+                </div>
+                <div id="media-output"></div>
+            </div>
+
+            <!-- JSON Tab -->
+            <div id="json" class="tab-content">
+                <div class="input-group">
+                    <input type="file" id="json-file-input" accept="application/json,.json">
+                    <textarea id="json-input"
+                        placeholder='Paste JSON (single or array)\nExample: {"name": "John", "city": "NYC"}'></textarea>
+                    <div class="input-row">
+                        <input type="text" id="json-comment" placeholder="Optional table name">
+                        <button id="store-json-btn">Store</button>
+                    </div>
+                </div>
+                <div id="json-output"></div>
+
+                <!-- Schema Analyzer -->
+                <div class="input-group" style="margin-top: 20px; border-top: 1px solid #333; padding-top: 15px;">
+                    <button id="analyze-schema-btn"
+                        style="background: #ff6b6b; width: 100%; padding: 12px; border: none; border-radius: 8px; color: white; font-weight: bold;">
+                        Analyze JSON → SQL or NoSQL
+                    </button>
+                    <div id="analyze-output"
+                        style="margin-top: 15px; font-family: monospace; background: #111; padding: 12px; border-radius: 8px; overflow-x: auto;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Tab -->
+            <div id="search" class="tab-content">
+                <div class="input-group">
+                    <div class="input-row">
+                        <input type="text" id="search-query" placeholder="e.g., 'cat', 'users from NYC'">
+                        <button id="search-btn">Search</button>
+                    </div>
+                    <div class="input-row" style="margin-top:15px; gap:10px;">
+                    </div>
+                    
+                </div>
+                <div id="search-output"></div>
+               
+                <div id="load-more-container" style="text-align:center; margin-top:20px; display:none;">
+                    <button id="load-more-btn"
+                        style="background:var(--primary); color:#000; padding:10px 24px; border:none; border-radius:50px; cursor:pointer; font-weight:600;">
+                        Load More
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="ai-integration">
+        <h2>AI Engine (On-Device)</h2>
+        <div class="ai-grid">
+            <div class="ai-card">
+                <h4>Classification</h4>
+                <p>MobileNet classifies images in-browser.</p>
+            </div>
+            <div class="ai-card">
+                <h4>Embeddings</h4>
+                <p>Feature vectors for semantic search.</p>
+            </div>
+            <div class="ai-card">
+                <h4>Schema AI</h4>
+                <p>Analyzes JSON → SQL/NoSQL decision.</p>
+            </div>
+            <div class="ai-card">
+                <h4>Secure</h4>
+                <p>All data stays in your browser.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works">
+        <h2>How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Upload</h3>
+                <p>Media or JSON via browser.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>AI Process</h3>
+                <p>TensorFlow.js + schema logic.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Store</h3>
+                <p>IndexedDB with smart structure.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Search</h3>
+                <p>Semantic + keyword across all.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 <strong>NOVA VAULT</strong> — Real Client-Side AI Storage</p>
+        <div class="badge">ENTERPRISE READY</div>
+    </footer>
+
+</body>
+
+</html>
