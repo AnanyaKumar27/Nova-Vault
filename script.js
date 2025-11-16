@@ -1,4 +1,4 @@
-// === SUPABASE CLIENT (CLOUDFLARE CDN - INDIA SAFE) ===
+//SUPABASE CLIENT
 if (typeof supabase === 'undefined') {
     console.error('Supabase CDN failed. Check internet or try another mirror.');
     document.body.innerHTML = '<h1 style="color:red; text-align:center; margin-top:100px;">Failed to load Supabase. Check your internet or try reloading.</h1>';
@@ -12,8 +12,8 @@ const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 window.supabase = client;
 console.log('NOVA VAULT initialized with Supabase (Cloudflare CDN)');
 
-// === LOCAL BLOB URL CACHE (in-memory + IndexedDB) ===
-const localUrlCache = new Map(); // fileId_key → blobUrl
+// LOCAL BLOB URL CACHE
+const localUrlCache = new Map(); 
 
 // IndexedDB setup for persistent blob URLs
 let idb;
@@ -629,4 +629,5 @@ document.getElementById("analyze-schema-btn")?.addEventListener("click", () => {
 setTimeout(() => {
     const pre = document.getElementById('preloader');
     if (pre) pre.classList.add('hidden');
+
 }, 1500);
